@@ -11,7 +11,7 @@ CFLAGS = -g -m32 -nostdlib -nostdinc -fno-builtin -fno-stack-protector -nostartf
 		 -Wall -Wextra -Werror
 
 # First rule is run by default
-os-image.bin: boot/bootsect.bin kernel.bin
+lychee.bin: boot/bootsect.bin kernel.bin
 	cat $^ > os-image.bin
 
 # '--oformat binary' deletes all symbols as a collateral, so we don't need
@@ -24,7 +24,7 @@ kernel.elf: boot/kernel_entry.o ${OBJ}
 	i386-elf-ld -o $@ -Ttext 0x1000 $^
 
 run: os-image.bin
-	qemu-system-i386 -fda os-image.bin
+	qemu-system-i386 -fda lychee.bin
 
 # Open the connection to qemu and load our kernel-object file with symbols
 debug: os-image.bin kernel.elf
