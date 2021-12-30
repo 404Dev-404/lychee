@@ -7,12 +7,12 @@ OBJ = ${C_SOURCES:.c=.o cpu/interrupt.o}
 CC = i386-elf-gcc
 GDB = i386-elf-gdb
 # -g: Use debugging symbols in gcc
-CFLAGS = -g -m32 -nostdlib -nostdinc -fno-builtin -fno-stack-protector -nostartfiles -nodefaultlibs \
+CFLAGS = -g -m32 -nostdinc -fno-builtin -fno-stack-protector -nostartfiles -nodefaultlibs \
 		 -Wall -Wextra -Werror
 
 # First rule is run by default
 lychee.bin: boot/bootsect.bin kernel.bin
-	cat $^ > os-image.bin
+	cat $^ > lychee.bin
 
 # '--oformat binary' deletes all symbols as a collateral, so we don't need
 # to 'strip' them manually on this case
@@ -23,12 +23,12 @@ kernel.bin: boot/kernel_entry.o ${OBJ}
 kernel.elf: boot/kernel_entry.o ${OBJ}
 	i386-elf-ld -o $@ -Ttext 0x1000 $^
 
-run: os-image.bin
+run: lychee.bin
 	qemu-system-i386 -fda lychee.bin
 
 # Open the connection to qemu and load our kernel-object file with symbols
-debug: os-image.bin kernel.elf
-	qemu-system-i386 -s -fda os-image.bin -d guest_errors,int &
+debug: lychee.bin kernel.elf
+	qemu-system-i386 -s -fda lychee.bin -d guest_errors,int &
 	${GDB} -ex "target remote localhost:1234" -ex "symbol-file kernel.elf"
 
 # Generic rules for wildcards
@@ -43,5 +43,5 @@ debug: os-image.bin kernel.elf
 	nasm $< -f bin -o $@
 
 clean:
-	rm -rf *.bin *.dis *.o os-image.bin *.elf
+	rm -rf kernel.bin *.dis *.o *.elf
 	rm -rf kernel/*.o boot/*.bin drivers/*.o boot/*.o cpu/*.o libc/*.o
