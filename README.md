@@ -1,4 +1,5 @@
 # Lychee
+![Lychee Logo](lychee_logo.png)
 An improved version of hemimorphite made using https://github.com/cfenollosa/os-tutorial
 
 How to Compile:
