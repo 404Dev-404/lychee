@@ -1,5 +1,6 @@
 #include "string.h"
 #include "../cpu/types.h"
+#include "../drivers/screen.h"
 
 /**
  * K&R implementation
@@ -29,12 +30,12 @@ void hex_to_ascii(int n, char str[]) {
         tmp = (n >> i) & 0xF;
         if (tmp == 0 && zeros == 0) continue;
         zeros = 1;
-        if (tmp > 0xA) append(str, tmp - 0xA + 'a');
+        if (tmp >= 0xA) append(str, tmp - 0xA + 'A');
         else append(str, tmp + '0');
     }
 
     tmp = n & 0xF;
-    if (tmp >= 0xA) append(str, tmp - 0xA + 'a');
+    if (tmp >= 0xA) append(str, tmp - 0xA + 'A');
     else append(str, tmp + '0');
 }
 

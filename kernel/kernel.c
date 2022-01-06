@@ -3,18 +3,27 @@
 #include "kernel.h"
 #include "../libc/string.h"
 #include "../libc/mem.h"
+#include "../libc/function.h"
+#include "../libc/sort.h"
+
+int test[] = {27, 758, 145, 24, 145, 64, 256, 32};
+int test_size = sizeof(test)/sizeof(test[0]);
+
+void info() {
+    char *build_date = __TIMESTAMP__;
+    kprint("LycheeOS v1.2.0\nBuild Date: ");
+    kprint(build_date);
+}
 
 void print_prompt() {
-    kprint("\nlysh prompt> ");
+    kprint("\nlysh> ");
 }
 
 void kernel_main() {
-    isr_install();
-    irq_install();
+    install();
     clear_screen();
-
     kprint("Welcome to LycheeOS!\n");
-    kprint("lysh prompt> ");
+    print_prompt();
 }
 
 void user_input(char *input) {
@@ -25,7 +34,6 @@ void user_input(char *input) {
         kprint("LySH Help:\nTo quit Lychee type \"END\".\nTo get info type \"INFO\".\nTo request a kmalloc() type \"PAGE\".\n");
         print_prompt();
     } else if (strcmp(input, "INFO") == 0) {
-        kprint("LycheeOS v1.1.0");
         print_prompt();
     } else if (strcmp(input, "PAGE") == 0) {
         u32 phys_addr;
@@ -42,10 +50,18 @@ void user_input(char *input) {
     } else if (strcmp(input, "CLS") == 0) {
         clear_screen();
         print_prompt();
+    } else if (strcmp(input, "HEX") == 0) {
+        int t = 0xCA11CE11; // call cell
+        // it rhymed i think
+        char tstr[32] = "";
+        hex_to_ascii(t, tstr);
+        kprint(tstr);
+        kprint("\n");
+        print_prompt();
     } else {
         kprint("lysh error: ");
         kprint(input);
-        kprint(" is not a command.");
+        kprint(" is not a command.\n");
         print_prompt();
     }
 }

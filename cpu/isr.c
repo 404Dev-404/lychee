@@ -151,3 +151,8 @@ void irq_install() {
     /* IRQ1: keyboard */
     init_keyboard();
 }
+
+void install() {
+    isr_install();
+    irq_install();
+}
