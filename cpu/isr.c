@@ -3,6 +3,7 @@
 #include "../drivers/screen.h"
 #include "../drivers/keyboard.h"
 #include "../libc/string.h"
+#include "../drivers/serial.h"
 #include "timer.h"
 #include "ports.h"
 
@@ -87,7 +88,6 @@ char *exception_messages[] = {
     "Out of Bounds",
     "Invalid Opcode",
     "No Coprocessor",
-
     "Double Fault",
     "Coprocessor Segment Overrun",
     "Bad TSS",
@@ -96,7 +96,6 @@ char *exception_messages[] = {
     "General Protection Fault",
     "Page Fault",
     "Unknown Interrupt",
-
     "Coprocessor Fault",
     "Alignment Check",
     "Machine Check",
@@ -105,7 +104,6 @@ char *exception_messages[] = {
     "Reserved",
     "Reserved",
     "Reserved",
-
     "Reserved",
     "Reserved",
     "Reserved",
@@ -117,12 +115,15 @@ char *exception_messages[] = {
 };
 
 void isr_handler(registers_t r) {
-    kprint("received interrupt: ");
+    sprint("ISR EXCEPTION: ");
+    kprint("ISR HANDLER HAS RECEIVED EXCEPTION: ");
     char s[3];
     int_to_ascii(r.int_no, s);
     kprint(s);
     kprint("\n");
+    sprint(exception_messages[r.int_no]);
     kprint(exception_messages[r.int_no]);
+    sprint("\r\n");
     kprint("\n");
 }
 

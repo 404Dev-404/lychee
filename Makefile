@@ -1,5 +1,5 @@
-C_SOURCES = $(wildcard kernel/*.c drivers/*.c cpu/*.c libc/*.c)
-HEADERS = $(wildcard kernel/*.h drivers/*.h cpu/*.h libc/*.h)
+C_SOURCES = $(wildcard kernel/*.c drivers/*.c cpu/*.c libc/*.c apps/*.c)
+HEADERS = $(wildcard kernel/*.h drivers/*.h cpu/*.h libc/*.h apps/*.h)
 # Nice syntax for file extension replacement
 OBJ = ${C_SOURCES:.c=.o cpu/interrupt.o}
 
@@ -8,7 +8,7 @@ CC = i386-elf-gcc
 GDB = i386-elf-gdb
 # -g: Use debugging symbols in gcc
 CFLAGS = -g -m32 -nostdinc -fno-builtin -fno-stack-protector -nostartfiles -nodefaultlibs \
-		 -Wall -Wextra -Werror
+		 -Wall -Wextra
 
 # First rule is run by default
 lychee.bin: boot/bootsect.bin kernel.bin
@@ -24,7 +24,7 @@ kernel.elf: boot/kernel_entry.o ${OBJ}
 	i386-elf-ld -o $@ -Ttext 0x1000 $^
 
 run: lychee.bin
-	qemu-system-i386 -fda lychee.bin
+	qemu-system-i386 -fda lychee.bin -serial mon:stdio
 
 # Open the connection to qemu and load our kernel-object file with symbols
 debug: lychee.bin kernel.elf
