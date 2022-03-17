@@ -1,4 +1,5 @@
 #include "serial.h"
+#include "parallel.h"
 #include "../libc/string.h"
 #define PORT 0x3F8
 
@@ -43,4 +44,18 @@ void sprint(char data[]) {
     int size = strlen(data);
     for (int i = 0; i < size; i++)
         write_serial(data[i]);
+}
+
+void kernel_log(char data[]) {
+    sprint("-=[LOG]=- ");
+    sprint(data);
+    sprint("\r\n");
+    pprint("-=[LOG]=- ");
+    pprint(data);
+    pprint("\r\n");
+    kcolor_change(0x0b);
+    kprint("-=[LOG]=- ");
+    kcolor_change(0x0f);
+    kprint(data);
+    kprint("\n");
 }

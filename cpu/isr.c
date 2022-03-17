@@ -115,15 +115,12 @@ char *exception_messages[] = {
 };
 
 void isr_handler(registers_t r) {
-    sprint("ISR EXCEPTION: ");
-    kprint("ISR HANDLER HAS RECEIVED EXCEPTION: ");
+    kprint("ISR EXCEPTION: ");
     char s[3];
     int_to_ascii(r.int_no, s);
     kprint(s);
     kprint("\n");
-    sprint(exception_messages[r.int_no]);
     kprint(exception_messages[r.int_no]);
-    sprint("\r\n");
     kprint("\n");
 }
 

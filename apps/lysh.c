@@ -1,7 +1,9 @@
 #include "lysh.h"
 
 void print_prompt() {
+    kcolor_change(0x04);
     kprint("\nlysh> ");
+    kcolor_change(0x0F);
 }
 
 void error(char *cmd) {
@@ -9,6 +11,13 @@ void error(char *cmd) {
     kprint(cmd);
     kprint(" is not a command.\n");
     print_prompt();
+}
+
+void die(char error) {
+    kcolor_change(0x1F);
+    kprint("A function has called the die() function with this error: \n");
+    kprint(error);
+    asm volatile("hlt");
 }
 
 void page() {
@@ -76,12 +85,15 @@ void info() {
 }
 
 void init_kernel() {
+    clear_screen();
     install();
     if (init_serial() != 0) {
         kprint("Serial Not Initialized.\n");
     }
-    clear_screen();
-    kprint("Welcome to LycheeOS!\n");
+    kprint("Welcome to"); 
+    kcolor_change(0x0C);
+    kprint(" LycheeOS!\n");
+    kcolor_change(0x0F);
     print_prompt();
 }
 
@@ -89,4 +101,8 @@ void cpu_stop() {
     sprint("CPU_STOP\r\n");
     kprint("Stopping the CPU. Bye!\n");
     asm volatile("hlt");
+}
+
+void parallel_test() {
+    pprint("hey");
 }

@@ -1,7 +1,7 @@
 #include "screen.h"
 #include "../cpu/ports.h"
 #include "../libc/mem.h"
-
+int DEFAULT_COLOR = 0x0f;
 /* Declaration of private functions */
 int get_cursor_offset();
 void set_cursor_offset(int offset);
@@ -143,6 +143,9 @@ void clear_screen() {
     set_cursor_offset(get_offset(0, 0));
 }
 
+void kcolor_change(int color) {
+    DEFAULT_COLOR = color;
+}
 
 int get_offset(int col, int row) { return 2 * (row * MAX_COLS + col); }
 int get_offset_row(int offset) { return offset / (2 * MAX_COLS); }

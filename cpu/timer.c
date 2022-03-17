@@ -2,8 +2,17 @@
 #include "isr.h"
 #include "ports.h"
 #include "../libc/function.h"
+#include "../drivers/serial.h"
+#include "../libc/string.h"
 
 u32 tick = 0;
+
+void get_ticks() {
+    char tick_str;
+    int_to_ascii(tick, tick_str);
+    kprint(tick_str);
+    kprint("\n");
+}
 
 static void timer_callback(registers_t regs) {
     tick++;
@@ -22,4 +31,5 @@ void init_timer(u32 freq) {
     port_byte_out(0x43, 0x36); /* Command port */
     port_byte_out(0x40, low);
     port_byte_out(0x40, high);
+    kernel_log("Timer Initialized!");
 }

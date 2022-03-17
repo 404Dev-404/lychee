@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "*.lex": "lex",
+        "screen.h": "c",
+        "keyboard.h": "c",
+        "kernel.h": "c"
+    }
+}

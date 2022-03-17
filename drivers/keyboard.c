@@ -5,6 +5,7 @@
 #include "../libc/string.h"
 #include "../libc/function.h"
 #include "../kernel/kernel.h"
+#include "serial.h"
 
 #define BACKSPACE 0x0E
 #define ENTER 0x1C
@@ -48,5 +49,5 @@ static void keyboard_callback(registers_t regs) {
 
 void init_keyboard() {
    register_interrupt_handler(IRQ1, keyboard_callback);
-   kprint("Keyboard Registered!\n");
+   kernel_log("Keyboard Registered!\n");
 }
