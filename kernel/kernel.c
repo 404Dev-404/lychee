@@ -1,6 +1,15 @@
 #include "kernel.h"
 #include "../cpu/timer.h"
-char* help = "LySH Help:\nTo quit Lychee type \"END\".\nTo get info type \"INFO\".\nTo request a kmalloc() type \"PAGE\".\nTo run FizzBuzz VGA Test type \"FIZZBUZZ\".\nTo verify serial functionality/run FizzBuzz on serial console type \"SERIALTEST\".";
+char* help = "LySH Help:\n"
+             "To quit Lychee type \"END\".\n"
+             "To clear screen type \"CLS\".\n"
+             "To get info type \"INFO\".\n"
+             "To request a kmalloc() type \"PAGE\".\n"
+             "To run FizzBuzz VGA Test type \"FIZZBUZZ\".\n"
+             "To verify serial functionality/run FizzBuzz on serial console type \"SERIALTEST\"."
+             "To get the ticks counted by the PIT type \"TICKS\".\n"
+             "To cause a kernel crash type \"DIVBYZERO\" or press Esc.\n"
+             "To test parallel type \"PARALLEL\".\n";
 
 void main() {
     init_kernel();
@@ -26,6 +35,10 @@ void user_input(char *input) {
         print_prompt();
     } else if (strcmp(input, "TICKS") == 0) {
         get_ticks();
+        print_prompt();
+    } else if (strcmp(input, "DIVBYZERO") == 0) {
+        // i have no idea how this works but it does
+        int i = 1 / (1 - 1);
         print_prompt();
     } else {
         error(input);

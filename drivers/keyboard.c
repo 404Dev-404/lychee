@@ -6,9 +6,11 @@
 #include "../libc/function.h"
 #include "../kernel/kernel.h"
 #include "serial.h"
+#include "../apps/lysh.h"
 
 #define BACKSPACE 0x0E
 #define ENTER 0x1C
+#define ESC 0x01
 
 static char key_buffer[256];
 
@@ -37,6 +39,9 @@ static void keyboard_callback(registers_t regs) {
         kprint("\n");
         user_input(key_buffer); /* kernel-controlled function */
         key_buffer[0] = '\0';
+    } else if (scancode == ESC) {
+        asm volatile("int $19");
+        print_prompt();
     } else {
         char letter = sc_ascii[(int)scancode];
         /* Remember that kprint only accepts char[] */

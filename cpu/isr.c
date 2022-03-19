@@ -99,7 +99,7 @@ char *exception_messages[] = {
     "Coprocessor Fault",
     "Alignment Check",
     "Machine Check",
-    "Reserved",
+    "Forced Kernel Panic",
     "Reserved",
     "Reserved",
     "Reserved",
@@ -115,13 +115,89 @@ char *exception_messages[] = {
 };
 
 void isr_handler(registers_t r) {
-    kprint("ISR EXCEPTION: ");
+    char ds[100];
+    hex_to_ascii(r.ds, ds);
+    char edi[100];
+    hex_to_ascii(r.edi, edi);
+    char esi[100];
+    hex_to_ascii(r.esi, esi);
+    char ebp[100];
+    hex_to_ascii(r.ebp, ebp);
+    char esp[100];
+    hex_to_ascii(r.esp, esp);
+    char ebx[100];
+    hex_to_ascii(r.ebx, ebx);
+    char ecx[100];
+    hex_to_ascii(r.ecx, ecx);
+    char edx[100];
+    hex_to_ascii(r.edx, edx);
+    char eax[100];
+    hex_to_ascii(r.eax, eax);
+    char eip[100];
+    hex_to_ascii(r.eip, eip);
+    char cs[100];
+    hex_to_ascii(r.cs, cs);
+    char ss[100];
+    hex_to_ascii(r.ss, ss);
+    char eflags[100];
+    hex_to_ascii(r.eflags, eflags);
+    char useresp[100];
+    hex_to_ascii(r.useresp, useresp);
+    kcolor_change(0x74);
+    clear_screen();
+    kcolor_change(0x47);
+    kprint_at("LycheeOS Guru Meditation\n\n", 40-(23/2), 1);
+    kcolor_change(0x74);
     char s[3];
-    int_to_ascii(r.int_no, s);
-    kprint(s);
-    kprint("\n");
+    hex_to_ascii(r.int_no, s);
+    kprint("Exception Message: ");
     kprint(exception_messages[r.int_no]);
+    kprint("\nException Number:  ");
+    kprint(s);
+    kprint("\nDS:      ");
+    kprint(ds);
     kprint("\n");
+    kprint("EDI:     ");
+    kprint(edi);
+    kprint("\n");
+    kprint("ESI:     ");
+    kprint(esi);
+    kprint("\n");
+    kprint("EBP:     ");
+    kprint(ebp);
+    kprint("\n");
+    kprint("ESP:     ");
+    kprint(esp);
+    kprint("\n");
+    kprint("EBX:     ");
+    kprint(ebx);
+    kprint("\n");
+    kprint("ECX:     ");
+    kprint(ecx);
+    kprint("\n");
+    kprint("EDX:     ");
+    kprint(edx);
+    kprint("\n");
+    kprint("EAX:     ");
+    kprint(eax);
+    kprint("\n");
+    kprint("EIP:     ");
+    kprint(eip);
+    kprint("\n");
+    kprint("CS:      ");
+    kprint(cs);
+    kprint("\n");
+    kprint("SS:      ");
+    kprint(ss);
+    kprint("\n");
+    kprint("EFLAGS:  ");
+    kprint(eflags);
+    kprint("\n");
+    kprint("USERESP: ");
+    kprint(useresp);
+    kprint("\n");
+    asm volatile("cli");
+    asm volatile("hlt");
 }
 
 void register_interrupt_handler(u8 n, isr_t handler) {
