@@ -143,11 +143,11 @@ void isr_handler(registers_t r) {
     hex_to_ascii(r.eflags, eflags);
     char useresp[100];
     hex_to_ascii(r.useresp, useresp);
-    kcolor_change(0x74);
-    clear_screen();
     kcolor_change(0x47);
-    kprint_at("LycheeOS Guru Meditation\n\n", 40-(23/2), 1);
+    clear_screen();
     kcolor_change(0x74);
+    kprint_at("LycheeOS Guru Meditation\n\n", 40-(23/2), 1);
+    kcolor_change(0x47);
     char s[3];
     hex_to_ascii(r.int_no, s);
     kprint("Exception Message: ");
@@ -196,6 +196,7 @@ void isr_handler(registers_t r) {
     kprint("USERESP: ");
     kprint(useresp);
     kprint("\n");
+    // kprint("\nNote: Sometimes hexadecimal will have random garbage text before it.");
     asm volatile("cli");
     asm volatile("hlt");
 }

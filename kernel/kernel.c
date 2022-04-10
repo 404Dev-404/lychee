@@ -1,5 +1,6 @@
 #include "kernel.h"
 #include "../cpu/timer.h"
+#include "../drivers/initrd.h"
 char* help = "LySH Help:\n"
              "To quit Lychee type \"END\".\n"
              "To clear screen type \"CLS\".\n"
@@ -8,7 +9,7 @@ char* help = "LySH Help:\n"
              "To run FizzBuzz VGA Test type \"FIZZBUZZ\".\n"
              "To verify serial functionality/run FizzBuzz on serial console type \"SERIALTEST\"."
              "To get the ticks counted by the PIT type \"TICKS\".\n"
-             "To cause a kernel crash type \"DIVBYZERO\" or press Esc.\n"
+             "To cause a kernel crash type \"DIVBYZERO\" or press Ctrl.\n"
              "To test parallel type \"PARALLEL\".\n";
 
 void main() {
@@ -39,6 +40,8 @@ void user_input(char *input) {
     } else if (strcmp(input, "DIVBYZERO") == 0) {
         // i have no idea how this works but it does
         int i = 1 / (1 - 1);
+    } else if (strcmp(input, "INITRD") == 0) {
+        read_initrd();
         print_prompt();
     } else {
         error(input);

@@ -10,7 +10,7 @@
 
 #define BACKSPACE 0x0E
 #define ENTER 0x1C
-#define ESC 0x01
+#define CTRL 0x1D
 
 static char key_buffer[256];
 
@@ -39,7 +39,7 @@ static void keyboard_callback(registers_t regs) {
         kprint("\n");
         user_input(key_buffer); /* kernel-controlled function */
         key_buffer[0] = '\0';
-    } else if (scancode == ESC) {
+    } else if (scancode == CTRL) {
         asm volatile("int $19");
         print_prompt();
     } else {

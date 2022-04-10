@@ -1,0 +1,4 @@
+lychee model: https://sketchfab.com/3d-models/lychee-2-ce5c4bda9a294692801b0c4cd84d7726
+crt casing texture: http://texturelib.com/texture/?path=/Textures/plastic/plastic_0066
+crt screen texture: ../drivers/keyboard.c
+crt: mine
